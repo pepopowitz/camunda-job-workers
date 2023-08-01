@@ -1,0 +1,15 @@
+{
+  "name": "camunda-job-workers",
+  "version": "1.0.0",
+  "description": "assorted job workers for camunda demos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steven Hicks",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "zeebe-node": "^8.1.2"
+  }
+}
