@@ -1,8 +1,6 @@
 // const { getTopology } = require('./functions/getTopology.js');
 
-// const {
-//   registerMagic8BallWorkers,
-// } = require('./functions/registerMagic8BallWorkers');
+const retrieveCustomerBalance = require('./ingo/retrieveCustomerBalance.js');
 
 // const { startProcessInstance } = require('./functions/startProcessInstance.js');
 
@@ -12,7 +10,7 @@ const ZB = require('zeebe-node');
 
 const zbc = new ZB.ZBClient();
 
-const customerCredit = 87;
+retrieveCustomerBalance.register(zbc);
 
 function registerHandler(taskName, handler) {
   zbc.createWorker({
@@ -21,24 +19,17 @@ function registerHandler(taskName, handler) {
   });
 }
 
-registerHandler('retrieve-customer-balance', retrieveCustomerCreditHandler);
-function retrieveCustomerCreditHandler(job) {
-  console.log(`retrieving customer credit: ${customerCredit}`);
-
-  const result = {
-    customerCredit,
-  };
-
-  return job.complete(result);
-}
-
 registerHandler('apply-credit', applyCreditHandler);
 function applyCreditHandler(job) {
   const { customerCredit, orderTotal } = job.variables;
 
-  const remainingBalance = orderTotal - customerCredit;
+  let remainingBalance = orderTotal - customerCredit;
+  if (remainingBalance < 0) {
+    remainingBalance = 0;
+  }
 
-  console.log(`applying credit: ${remainingBalance} remaining.`);
+  console.log(`applying credit of ${customerCredit}.`);
+  console.log(`  remaining balance: ${remainingBalance}.`);
 
   const result = {
     remainingBalance,
@@ -49,7 +40,13 @@ function applyCreditHandler(job) {
 
 registerHandler('charge-credit-card', chargeCreditCardHandler);
 function chargeCreditCardHandler(job) {
-  console.log(`cha ching $$$$$ ${job.variables.remainingBalance}`);
+  const { cardNumber, cvc, expiryDate, remainingBalance } = job.variables;
+
+  console.log(`cha ching $$$$$`);
+  console.log(`  credit card number: ${cardNumber}`);
+  console.log(`  cvc: ${cvc}`);
+  console.log(`  expiry date: ${expiryDate}`);
+  console.log(`  amount: ${remainingBalance}`);
 
   return job.complete();
 }
