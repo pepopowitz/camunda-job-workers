@@ -1,4 +1,4 @@
-function register(zbc) {
+export function register(zbc) {
   zbc.createWorker({
     taskType: 'retrieve-customer-balance',
     taskHandler: retrieveCustomerCreditHandler,
@@ -18,5 +18,3 @@ function retrieveCustomerCreditHandler(job) {
 
   return job.complete(result);
 }
-
-module.exports = { register };

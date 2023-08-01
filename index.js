@@ -1,13 +1,14 @@
 // const { getTopology } = require('./functions/getTopology.js');
 
-const retrieveCustomerBalance = require('./ingo/retrieveCustomerBalance.js');
+import * as retrieveCustomerBalance from './ingo/retrieveCustomerBalance.js';
 
 // const { startProcessInstance } = require('./functions/startProcessInstance.js');
 
 // this will read configuration from a file named .env -- that file should contain all your environment variables, like "export ZEEBE_ADDRESS='....'"
-require('dotenv').config();
-const ZB = require('zeebe-node');
+import * as dotenv from 'dotenv';
+import * as ZB from 'zeebe-node';
 
+dotenv.config();
 const zbc = new ZB.ZBClient();
 
 retrieveCustomerBalance.register(zbc);

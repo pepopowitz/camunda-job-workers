@@ -2,6 +2,7 @@
   "name": "camunda-job-workers",
   "version": "1.0.0",
   "description": "assorted job workers for camunda demos",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
